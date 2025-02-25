@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITS365 PerceptronHW Podczerwinski</title>
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.2.3/core.css">
+    <script type="module" src="https://pyscript.net/releases/2025.2.3/core.js"></script>
+    
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 50px);
+            grid-gap: 10px;
+        }
+        .grid-item {
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Input</h2>
+    <div class="grid-container" id="input-grid"></div>
+    <button id="calculate-btn">Show Result</button>
+    <div id="output"></div>
+
+    <script>
+        // Weights and bias
+        const weights = [-0.29349942, 0.35518398, 0.14961976, 0.81004194, -0.25088307, 0.63233366, 0.87691569, 0.45014643, 0.08946562, 0.27094682, 0.77140066, 0.86739215, -0.0723764 , -0.13254023, -0.18399975, 0.38766094];
+        const bias = -0.0991786;
+
+        // Grid creation
+        function createInputGrid() {
+            const gridContainer = document.getElementById('input-grid');
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    const div = document.createElement('div');
+                    div.classList.add('grid-item');
+                    const inputElem = document.createElement('input');
+                    inputElem.type = 'number';
+                    inputElem.id = `input-${i}-${j}`;
+                    inputElem.min = '0';
+                    inputElem.max = '1';
+                    inputElem.value = '0';
+                    div.appendChild(inputElem);
+                    gridContainer.appendChild(div);
+                }
+            }
+        }
+
+        // Perceptron code
+        function calculatePerceptronOutput() {
+            // Gather inputs from grid
+            let inputVector = [];
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    const inputElem = document.getElementById(`input-${i}-${j}`);
+                    inputVector.push(parseInt(inputElem.value));
+                }
+            }
+
+            // Activation/Step function
+            let totalSum = 0;
+            for (let i = 0; i < inputVector.length; i++) {
+                totalSum += inputVector[i] * weights[i];
+            }
+            totalSum += bias;
+            const output = totalSum >= 0 ? 1 : 0;
+
+            // Display output
+            const outputDiv = document.getElementById('output');
+            if (output === 1) {
+                outputDiv.innerHTML = "Output: 1 (T shape)";
+            } else {
+                outputDiv.innerHTML = "Output: 0 (L shape)";
+            }
+        }
+
+        // Show grid on page load
+        window.onload = function() {
+            createInputGrid();
+            document.getElementById('calculate-btn').addEventListener('click', calculatePerceptronOutput);
+        };
+    </script>
+</body>
+</html>
