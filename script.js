@@ -17,7 +17,7 @@ async function loadModel() {
   try {
     console.log("Loading ONNX model...");
     session = await ort.InferenceSession.create(
-      'https://drive.google.com/uc?export=download&id=1lJglol6lf41_nZKlBPce9bucILF5aOcS',
+      'https://huggingface.co/apodcze/dog-breed-model/resolve/main/dog_breed_classifier2.onnx',
       {
         executionProviders: ['wasm']
       }
